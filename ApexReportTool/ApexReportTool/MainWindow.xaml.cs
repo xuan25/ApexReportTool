@@ -4,6 +4,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using Tesseract;
 
@@ -17,6 +18,25 @@ namespace ApexReportTool
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            try
+            {
+                Hotkey.Regist(this, HotkeyModifiers.MOD_CONTROL | HotkeyModifiers.MOD_ALT, Key.P, () =>
+                {
+                    this.WindowState = WindowState.Normal;
+                    this.Activate();
+                    GetPlayerId();
+                });
+                this.Title += " (Ctrl+Alt+P 快速举报)";
+            }
+            catch (Exception)
+            {
+                this.Title += " (快速举报已禁用)";
+            }
+            
         }
 
         [Serializable]
@@ -88,7 +108,7 @@ namespace ApexReportTool
         }
 
         Thread getPlayerIdThread;
-        private void RefreshBtn_Click(object sender, RoutedEventArgs e)
+        private void GetPlayerId()
         {
             if (getPlayerIdThread != null)
                 getPlayerIdThread.Abort();
@@ -104,9 +124,19 @@ namespace ApexReportTool
 
                 Bitmap bitmap = Screenshot.GetImg("Apex Legends");
 
+                if (bitmap.Width < 2 || bitmap.Height < 2)
+                {
+                    Dispatcher.Invoke(new Action(() =>
+                    {
+                        HeakerIdBox.Text = "";
+                        HeakerIdBox.IsEnabled = true;
+                    }));
+                    return;
+                }
+
                 ApexLayout.ApexNameTagPosition tagPosition = new ApexLayout.ApexNameTagPosition(bitmap);
 
-                System.Drawing.Rectangle area = tagPosition.GetArea();
+                Rectangle area = tagPosition.GetArea();
                 if (area.Width <= 0)
                 {
                     Dispatcher.Invoke(new Action(() =>
@@ -116,7 +146,7 @@ namespace ApexReportTool
                     }));
                     return;
                 }
-                    
+
                 Bitmap newbitmap = Screenshot.CropImage(bitmap, tagPosition.GetStartPoint(), area);
 
                 Dispatcher.Invoke(new Action(() =>
@@ -124,7 +154,7 @@ namespace ApexReportTool
                     BitmapSource bitmapSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(newbitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
                     ImageBox.Source = bitmapSource;
                 }));
-                
+
                 Screenshot.Monochrome(newbitmap);
 
                 Dispatcher.Invoke(new Action(() =>
@@ -134,7 +164,7 @@ namespace ApexReportTool
                 }));
 
                 TesseractEngine tesseractEngine = new TesseractEngine("./tessdata", "eng", EngineMode.TesseractAndCube);
-                Tesseract.Page page = tesseractEngine.Process(newbitmap);
+                Page page = tesseractEngine.Process(newbitmap);
                 Dispatcher.Invoke(new Action(() =>
                 {
                     HeakerIdBox.Text = page.GetText().Trim();
@@ -143,6 +173,11 @@ namespace ApexReportTool
 
             });
             getPlayerIdThread.Start();
+        }
+
+        private void RefreshBtn_Click(object sender, RoutedEventArgs e)
+        {
+            GetPlayerId();
         }
 
         private void SubmitBtn_Click(object sender, RoutedEventArgs e)

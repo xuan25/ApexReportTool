@@ -19,7 +19,7 @@ namespace ApexReportTool
         {
             Exception ex = e.ExceptionObject as Exception;
             MessageBox.Show("An unexpected and unrecoverable problem has occourred. \r\nThe software will now exit.\r\n\r\n" + string.Format("Captured an unhandled exception：\r\n{0}\r\n\r\nException Message：\r\n{1}\r\n\r\nException StackTrace：\r\n{2}", ex.GetType(), ex.Message, ex.StackTrace), "The software will now exit.", MessageBoxButton.OK, MessageBoxImage.Error);
-            Environment.Exit(0);
+            //Environment.Exit(0);
         }
 
         private void Application_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)

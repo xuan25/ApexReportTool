@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ApexReportTool"
         mc:Ignorable="d"
-        Title="Apex Report Tool" Height="320" Width="573" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" Closing="Window_Closing">
+        Title="Apex Report Tool" MinHeight="320" MinWidth="570" Height="320" Width="570" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -37,7 +37,7 @@
                     <TextBox x:Name="PlayerIdBox" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" Height="23" Margin="10,0" TextWrapping="NoWrap" Text="" VerticalAlignment="Stretch"/>
                     <TextBox x:Name="FirstNameBox" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" Height="23" Margin="10,0" TextWrapping="NoWrap" Text="" VerticalAlignment="Stretch"/>
                     <TextBox x:Name="EmailBox" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Stretch" Height="23" Margin="10,0" TextWrapping="NoWrap" Text="" VerticalAlignment="Stretch"/>
-                    <TextBox x:Name="DetailsBox" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Stretch" Margin="10,5" TextWrapping="NoWrap" Text="" VerticalAlignment="Stretch"/>
+                    <TextBox x:Name="DetailsBox" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Stretch" Margin="10,5" TextWrapping="Wrap" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" AcceptsReturn="True" Text="" VerticalAlignment="Stretch"/>
                 </Grid>
             </Border>
 
