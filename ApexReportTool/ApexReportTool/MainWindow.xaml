@@ -1,0 +1,94 @@
+﻿<Window x:Class="ApexReportTool.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ApexReportTool"
+        mc:Ignorable="d"
+        Title="Apex Report Tool" Height="320" Width="573" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" Closing="Window_Closing">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Border Grid.Column="0" BorderBrush="LightGray" BorderThickness="1">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="0,0,0,0" TextWrapping="NoWrap" Text="提交者信息" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,10,0" TextWrapping="NoWrap" Text="游戏ID:" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,10,0" TextWrapping="NoWrap" Text="称呼:" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,10,0" TextWrapping="NoWrap" Text="电子邮箱:" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Row="4" Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,10,0" TextWrapping="NoWrap" Text="附加描述:" VerticalAlignment="Center"/>
+                    <TextBox x:Name="PlayerIdBox" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" Height="23" Margin="10,0" TextWrapping="NoWrap" Text="" VerticalAlignment="Stretch"/>
+                    <TextBox x:Name="FirstNameBox" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" Height="23" Margin="10,0" TextWrapping="NoWrap" Text="" VerticalAlignment="Stretch"/>
+                    <TextBox x:Name="EmailBox" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Stretch" Height="23" Margin="10,0" TextWrapping="NoWrap" Text="" VerticalAlignment="Stretch"/>
+                    <TextBox x:Name="DetailsBox" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Stretch" Margin="10,5" TextWrapping="NoWrap" Text="" VerticalAlignment="Stretch"/>
+                </Grid>
+            </Border>
+
+            <Border Grid.Column="1" BorderBrush="LightGray" BorderThickness="1">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="0,0,0,0" TextWrapping="NoWrap" Text="被举报者信息" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,10,0" TextWrapping="NoWrap" Text="游戏ID:" VerticalAlignment="Center"/>
+                    <TextBox x:Name="HeakerIdBox" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" Height="23" Margin="10,0" TextWrapping="NoWrap" Text="" VerticalAlignment="Stretch"/>
+                    <Border Grid.Row="2" Grid.Column="1" Margin="10,2" BorderBrush="LightGray" BorderThickness="1">
+                        <Image x:Name="ImageBox" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch"/>
+                    </Border>
+                    <Border Grid.Row="3" Grid.Column="1" Margin="10,2" BorderBrush="LightGray" BorderThickness="1">
+                        <Image x:Name="MonoImageBox" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch"/>
+                    </Border>
+                    <TextBlock Grid.Row="4" Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,10,0" TextWrapping="NoWrap" Text="举报内容:" VerticalAlignment="Center"/>
+                    <Border Grid.Row="4" Grid.Column="1" Margin="10,5" BorderBrush="LightGray" BorderThickness="1">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <CheckBox x:Name="WallHackCkb" Grid.Row="0" Grid.Column="0" Content="透视" IsChecked="True" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <CheckBox x:Name="AimbotCkb"  Grid.Row="0" Grid.Column="2" Content="自瞄" IsChecked="True" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Border>
+
+
+        </Grid>
+        <Grid Grid.Row="1">
+            <Button x:Name="RefreshBtn" Content="识别正在观战的玩家Id" HorizontalAlignment="Right" VerticalAlignment="Center" Width="135" Click="RefreshBtn_Click" Margin="0,6,90,6"/>
+            <Button x:Name="SubmitBtn" Content="提交" HorizontalAlignment="Right" VerticalAlignment="Center" Width="75" Margin="0,0,10,0" Click="SubmitBtn_Click"/>
+        </Grid>
+
+
+    </Grid>
+</Window>
