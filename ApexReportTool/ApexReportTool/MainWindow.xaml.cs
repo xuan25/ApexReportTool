@@ -149,17 +149,17 @@ namespace ApexReportTool
         {
             if (EmailBox.Text.Trim() == "")
             {
-                MessageBoxEx.Show("请填写电子邮箱", "提交失败", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBoxEx.Show(this, "请填写电子邮箱", "提交失败", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             if(FirstNameBox.Text.Trim() == "")
             {
-                MessageBoxEx.Show("请填写称呼", "提交失败", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBoxEx.Show(this, "请填写称呼", "提交失败", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             if (HeakerIdBox.Text.Trim() == "")
             {
-                MessageBoxEx.Show("请填写被举报者的Id", "提交失败", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBoxEx.Show(this, "请填写被举报者的Id", "提交失败", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -170,15 +170,15 @@ namespace ApexReportTool
             }
             catch (ApexEac.GetVerificationException)
             {
-                MessageBoxEx.Show("连接失败", "提交失败", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBoxEx.Show(this, "连接失败", "提交失败", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             catch (ApexEac.InvalidParameterException ex)
             {
-                MessageBoxEx.Show(ex.Message, "提交被驳回", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBoxEx.Show(this, ex.Message, "提交被驳回", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            MessageBoxEx.Show("提交成功", "提交成功", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBoxEx.Show(this, "提交成功", "提交成功", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
 }
