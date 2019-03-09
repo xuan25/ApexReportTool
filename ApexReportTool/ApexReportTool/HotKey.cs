@@ -9,7 +9,6 @@ namespace ApexReportTool
 {
     class Hotkey
     {
-
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         static extern bool RegisterHotKey(IntPtr hWnd, int id, HotkeyModifiers fsModifiers, uint vk);

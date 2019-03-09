@@ -3,6 +3,11 @@ using System.Drawing;
 
 namespace ApexReportTool
 {
+    /// <summary>
+    /// A class for Finding name tag in Apex screenshot
+    /// Author: Xuan525
+    /// Date: 09/03/2019
+    /// </summary>
     class ApexLayout
     {
         public class ApexNameTagPosition

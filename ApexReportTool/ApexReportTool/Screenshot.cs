@@ -4,6 +4,11 @@ using System.Runtime.InteropServices;
 
 namespace ApexReportTool
 {
+    /// <summary>
+    /// A class for Processing screenshots in Apex
+    /// Author: Xuan525
+    /// Date: 09/03/2019
+    /// </summary>
     class Screenshot
     {
         [DllImport("user32.dll")]
