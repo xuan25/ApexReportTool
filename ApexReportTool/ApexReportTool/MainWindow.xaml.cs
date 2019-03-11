@@ -6,6 +6,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using System.Windows.Resources;
 
 namespace ApexReportTool
 {
@@ -16,19 +17,48 @@ namespace ApexReportTool
     /// </summary>
     public partial class MainWindow : Window
     {
+        
         public MainWindow()
         {
             InitializeComponent();
+            InitializeContextMenu();
         }
 
         protected override void OnSourceInitialized(EventArgs e)
+        {
+            InitializeHotkeys();
+        }
+
+        private System.Windows.Forms.NotifyIcon notifyIcon;
+        private void InitializeContextMenu()
+        {
+            Uri uri = new Uri("/icon.ico", UriKind.Relative);
+            StreamResourceInfo info = Application.GetResourceStream(uri);
+            notifyIcon = new System.Windows.Forms.NotifyIcon();
+            notifyIcon.Text = this.Title;
+            notifyIcon.Icon = new Icon(info.Stream);
+            notifyIcon.Visible = true;
+            notifyIcon.Click += notifyIcon_Click;
+
+            System.Windows.Forms.MenuItem exitMenuItem = new System.Windows.Forms.MenuItem("退出", delegate (object sender, EventArgs args)
+            {
+                this.Close();
+            });
+            notifyIcon.ContextMenu = new System.Windows.Forms.ContextMenu(new System.Windows.Forms.MenuItem[] { exitMenuItem });
+        }
+
+        private void notifyIcon_Click(object sender, EventArgs e)
+        {
+            ShowWindow();
+        }
+
+        private void InitializeHotkeys()
         {
             try
             {
                 Hotkey.Regist(this, HotkeyModifiers.MOD_CONTROL | HotkeyModifiers.MOD_ALT, Key.P, () =>
                 {
-                    this.WindowState = WindowState.Normal;
-                    this.Activate();
+                    ShowWindow();
                     GetPlayerId();
                 });
                 this.Title += " (Ctrl+Alt+P 快速举报)";
@@ -37,7 +67,21 @@ namespace ApexReportTool
             {
                 this.Title += " (快速举报已禁用)";
             }
-            
+        }
+
+        private void ShowWindow()
+        {
+            this.Show();
+            this.WindowState = WindowState.Normal;
+            this.Activate();
+        }
+
+        private void Window_StateChanged(object sender, EventArgs e)
+        {
+            if (this.WindowState == WindowState.Minimized)
+            {
+                this.Hide();
+            }
         }
 
         [Serializable]
@@ -105,6 +149,7 @@ namespace ApexReportTool
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            notifyIcon.Dispose();
             SaveStatus();
         }
 
@@ -196,5 +241,6 @@ namespace ApexReportTool
             }
             MessageBoxEx.Show(this, "提交成功", "提交成功", MessageBoxButton.OK, MessageBoxImage.Information);
         }
+
     }
 }
