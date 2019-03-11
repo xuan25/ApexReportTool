@@ -36,29 +36,15 @@ namespace ApexReportTool
 
             Bitmap newbitmap = Screenshot.CropImage(bitmap, tagPosition.GetStartPoint(), area);
 
-            //Dispatcher.Invoke(new Action(() =>
-            //{
-            //    BitmapSource bitmapSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(newbitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-            //    ImageBox.Source = bitmapSource;
-            //}));
             PlayerIdFound?.Invoke(newbitmap);
 
             Screenshot.Monochrome(newbitmap);
 
-            //Dispatcher.Invoke(new Action(() =>
-            //{
-            //    BitmapSource monoBitmapSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(newbitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-            //    MonoImageBox.Source = monoBitmapSource;
-            //}));
             PlayerIdMonochrome?.Invoke(newbitmap);
 
             TesseractEngine tesseractEngine = new TesseractEngine("./tessdata", "eng", EngineMode.TesseractAndCube);
             Page page = tesseractEngine.Process(newbitmap);
-            //Dispatcher.Invoke(new Action(() =>
-            //{
-            //    HeakerIdBox.Text = page.GetText().Trim();
-            //    HeakerIdBox.IsEnabled = true;
-            //}));
+
             return page.GetText().Trim();
         }
     }

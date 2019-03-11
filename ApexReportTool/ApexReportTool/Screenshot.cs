@@ -83,7 +83,7 @@ namespace ApexReportTool
 
         public static Bitmap GetImg(string windowName)//得到窗口截图
         {
-            IntPtr hWnd = FindWindow(null, "Apex Legends");
+            IntPtr hWnd = FindWindow(null, windowName);
             return GetImg(hWnd);
         }
 
