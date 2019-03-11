@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -47,7 +48,7 @@ namespace ApexReportTool
 
             PlayerIdMonochrome?.Invoke(newbitmap);
 
-            TesseractEngine tesseractEngine = new TesseractEngine("./tessdata", "eng", EngineMode.TesseractAndCube);
+            TesseractEngine tesseractEngine = new TesseractEngine("./bin/tessdata", "eng", EngineMode.TesseractAndCube);
             Page page = tesseractEngine.Process(newbitmap);
 
             return page.GetText().Trim();

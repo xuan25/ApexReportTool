@@ -6,7 +6,6 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
-using Tesseract;
 
 namespace ApexReportTool
 {
