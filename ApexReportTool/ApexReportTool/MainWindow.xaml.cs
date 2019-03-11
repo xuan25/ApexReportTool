@@ -63,7 +63,7 @@ namespace ApexReportTool
             string fileDirectory = Environment.CurrentDirectory + "\\";
             if (!Directory.Exists(fileDirectory))
                 Directory.CreateDirectory(fileDirectory);
-            string fileName = "Status.dat";
+            string fileName = "Config.dat";
             Stream stream = new FileStream(fileDirectory + fileName, FileMode.Create, FileAccess.ReadWrite);
             BinaryFormatter binaryFormatter = new BinaryFormatter();
             binaryFormatter.Serialize(stream, status);
@@ -72,7 +72,7 @@ namespace ApexReportTool
 
         public bool LoadStatus()
         {
-            string path = Environment.CurrentDirectory + "\\Status.dat";
+            string path = Environment.CurrentDirectory + "\\Config.dat";
             if (!File.Exists(path))
             {
                 return false;
