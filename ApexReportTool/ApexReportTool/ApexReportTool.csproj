@@ -63,6 +63,7 @@
     <Compile Include="ApexLayout.cs" />
     <Compile Include="Hotkey.cs" />
     <Compile Include="MessageBoxEx.cs" />
+    <Compile Include="PlayerIdParser.cs" />
     <Compile Include="ReportDetails.cs" />
     <Compile Include="Screenshot.cs" />
     <Page Include="MainWindow.xaml">

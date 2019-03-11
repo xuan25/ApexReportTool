@@ -124,57 +124,37 @@ namespace ApexReportTool
                     MonoImageBox.Source = null;
                 }));
 
-                Bitmap bitmap = Screenshot.GetImg("Apex Legends");
+                PlayerIdParser playerIdParser = new PlayerIdParser();
+                playerIdParser.PlayerIdFound += PlayerIdParser_PlayerIdFound;
+                playerIdParser.PlayerIdMonochrome += PlayerIdParser_PlayerIdMonochrome;
+                string id = playerIdParser.Parse();
 
-                if (bitmap.Width < 2 || bitmap.Height < 2)
+                Dispatcher.Invoke(new Action(() =>
                 {
-                    Dispatcher.Invoke(new Action(() =>
-                    {
+                    if (id != null)
+                        HeakerIdBox.Text = id;
+                    else
                         HeakerIdBox.Text = "";
-                        HeakerIdBox.IsEnabled = true;
-                    }));
-                    return;
-                }
-
-                ApexLayout.ApexNameTagPosition tagPosition = new ApexLayout.ApexNameTagPosition(bitmap);
-
-                Rectangle area = tagPosition.GetArea();
-                if (area.Width <= 0)
-                {
-                    Dispatcher.Invoke(new Action(() =>
-                    {
-                        HeakerIdBox.Text = "";
-                        HeakerIdBox.IsEnabled = true;
-                    }));
-                    return;
-                }
-
-                Bitmap newbitmap = Screenshot.CropImage(bitmap, tagPosition.GetStartPoint(), area);
-
-                Dispatcher.Invoke(new Action(() =>
-                {
-                    BitmapSource bitmapSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(newbitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-                    ImageBox.Source = bitmapSource;
-                }));
-
-                Screenshot.Monochrome(newbitmap);
-
-                Dispatcher.Invoke(new Action(() =>
-                {
-                    BitmapSource monoBitmapSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(newbitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-                    MonoImageBox.Source = monoBitmapSource;
-                }));
-
-                TesseractEngine tesseractEngine = new TesseractEngine("./tessdata", "eng", EngineMode.TesseractAndCube);
-                Page page = tesseractEngine.Process(newbitmap);
-                Dispatcher.Invoke(new Action(() =>
-                {
-                    HeakerIdBox.Text = page.GetText().Trim();
                     HeakerIdBox.IsEnabled = true;
                 }));
-
             });
             getPlayerIdThread.Start();
+        }
+
+        private void PlayerIdParser_PlayerIdMonochrome(Bitmap bitmap)
+        {
+            Dispatcher.Invoke(new Action(() =>
+            {
+                ImageBox.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+            }));
+        }
+
+        private void PlayerIdParser_PlayerIdFound(Bitmap bitmap)
+        {
+            Dispatcher.Invoke(new Action(() =>
+            {
+                MonoImageBox.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+            }));
         }
 
         private void RefreshBtn_Click(object sender, RoutedEventArgs e)
