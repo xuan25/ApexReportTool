@@ -11,6 +11,11 @@ using Tesseract;
 
 namespace ApexReportTool
 {
+    /// <summary>
+    /// A class for parsing player id
+    /// Author: Xuan525
+    /// Date: 11/03/2019
+    /// </summary>
     class PlayerIdParser
     {
         public delegate void BitmapDel(Bitmap bitmap);
