@@ -10,12 +10,14 @@ namespace ApexReportTool
     class ReportDetails
     {
         public string HackerName, Details;
-        public bool WallHack, Aimbot;
-        public ReportDetails(string hackerName, bool wallHack, bool aimbot, string details)
+        public bool WallHack, Aimbot, SpeedHacked, DamageHacked;
+        public ReportDetails(string hackerName, bool wallHack, bool aimbot, bool speedHacked, bool damageHacked, string details)
         {
             HackerName = hackerName;
             WallHack = wallHack;
             Aimbot = aimbot;
+            SpeedHacked = speedHacked;
+            DamageHacked = damageHacked;
             Details = details;
         }
 
@@ -29,7 +31,11 @@ namespace ApexReportTool
                 stringBuilder.AppendLine("- Wall hack");
             if (Aimbot)
                 stringBuilder.AppendLine("- Aimbot");
-            if(Details != null && Details.Trim() != "")
+            if (SpeedHacked)
+                stringBuilder.AppendLine("- Movement speed hacked");
+            if (DamageHacked)
+                stringBuilder.AppendLine("- Damage hacked");
+            if (Details != null && Details.Trim() != "")
             {
                 stringBuilder.AppendLine("--------");
                 stringBuilder.AppendLine(Details);

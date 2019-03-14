@@ -75,8 +75,10 @@
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <CheckBox x:Name="WallHackCkb" Grid.Row="0" Grid.Column="0" Content="透视" IsChecked="True" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            <CheckBox x:Name="AimbotCkb"  Grid.Row="0" Grid.Column="2" Content="自瞄" IsChecked="True" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <CheckBox x:Name="WallHackCkb" Grid.Row="0" Grid.Column="0" Margin="10,0,0,0" Content="透视" IsChecked="True" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                            <CheckBox x:Name="AimbotCkb"  Grid.Row="0" Grid.Column="1" Margin="10,0,0,0" Content="自瞄" IsChecked="True" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                            <CheckBox x:Name="SpeedHackedCkb"  Grid.Row="1" Grid.Column="0" Margin="10,0,0,0" Content="篡改移速" IsChecked="True" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                            <CheckBox x:Name="DamageHackedCkb"  Grid.Row="1" Grid.Column="1" Margin="10,0,0,0" Content="篡改伤害" IsChecked="True" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                         </Grid>
                     </Border>
                 </Grid>
@@ -87,6 +89,7 @@
         <Grid Grid.Row="1">
             <Button x:Name="RefreshBtn" Content="识别正在观战的玩家Id" HorizontalAlignment="Right" VerticalAlignment="Center" Width="135" Click="RefreshBtn_Click" Margin="0,6,90,6"/>
             <Button x:Name="SubmitBtn" Content="提交" HorizontalAlignment="Right" VerticalAlignment="Center" Width="75" Margin="0,0,10,0" Click="SubmitBtn_Click"/>
+            <CheckBox x:Name="SaveImgCkb" Content="备份捕获图像" IsChecked="True" HorizontalAlignment="Right" Margin="0,0,230,0" VerticalAlignment="Center"/>
         </Grid>
 
 

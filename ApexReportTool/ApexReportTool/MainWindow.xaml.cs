@@ -88,7 +88,8 @@ namespace ApexReportTool
         class Status
         {
             public string PlayerId, FirstName, Email, Details;
-            public bool IsWallHack, IsAimbot;
+            public bool IsWallHack, IsAimbot, IsSpeedHacked, IsDamageHacked;
+            public bool IsSaveImg;
         }
 
         public void SaveStatus()
@@ -101,6 +102,9 @@ namespace ApexReportTool
                 Details = DetailsBox.Text,
                 IsWallHack = WallHackCkb.IsChecked == true,
                 IsAimbot = AimbotCkb.IsChecked == true,
+                IsSpeedHacked = SpeedHackedCkb.IsChecked == true,
+                IsDamageHacked = DamageHackedCkb.IsChecked == true,
+                IsSaveImg = SaveImgCkb.IsChecked == true
             };
 
             string fileDirectory = Environment.CurrentDirectory + "\\";
@@ -133,6 +137,9 @@ namespace ApexReportTool
                 DetailsBox.Text = status.Details;
                 WallHackCkb.IsChecked = status.IsWallHack;
                 AimbotCkb.IsChecked = status.IsAimbot;
+                SpeedHackedCkb.IsChecked = status.IsSpeedHacked;
+                DamageHackedCkb.IsChecked = status.IsDamageHacked;
+                SaveImgCkb.IsChecked = status.IsSaveImg;
 
                 return true;
             }
@@ -187,18 +194,33 @@ namespace ApexReportTool
 
         private void PlayerIdParser_PlayerIdMonochrome(Bitmap bitmap)
         {
+            bool isSave;
             Dispatcher.Invoke(new Action(() =>
             {
                 ImageBox.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                isSave = SaveImgCkb.IsChecked == true;
             }));
+            SaveImage(bitmap, "orig");
         }
 
         private void PlayerIdParser_PlayerIdFound(Bitmap bitmap)
         {
+            bool isSave;
             Dispatcher.Invoke(new Action(() =>
             {
                 MonoImageBox.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                isSave = SaveImgCkb.IsChecked == true;
             }));
+            SaveImage(bitmap, "mono");
+        }
+
+        private void SaveImage(Bitmap bitmap, string tag)
+        {
+            string directory = Environment.CurrentDirectory + "\\img\\";
+            string filename = tag + "_" + DateTime.Now.ToFileTime().ToString() + ".png";
+            if (!Directory.Exists(directory))
+                Directory.CreateDirectory(directory);
+            bitmap.Save(directory + filename);
         }
 
         private void RefreshBtn_Click(object sender, RoutedEventArgs e)
@@ -224,7 +246,12 @@ namespace ApexReportTool
                 return;
             }
 
-            ReportDetails reportDetails = new ReportDetails(HeakerIdBox.Text, WallHackCkb.IsChecked == true, AimbotCkb.IsChecked == true, DetailsBox.Text);
+            ReportDetails reportDetails = new ReportDetails(HeakerIdBox.Text, 
+                WallHackCkb.IsChecked == true, 
+                AimbotCkb.IsChecked == true, 
+                SpeedHackedCkb.IsChecked == true, 
+                DamageHackedCkb.IsChecked == true, 
+                DetailsBox.Text);
             try
             {
                 ApexEac.Submit(PlayerIdBox.Text, FirstNameBox.Text, "", EmailBox.Text, reportDetails.ToString());
