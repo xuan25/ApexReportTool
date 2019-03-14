@@ -6,6 +6,8 @@ namespace ApexReportTool
 {
     /// <summary>
     /// LoginWindow.xaml 的交互逻辑
+    /// Author: Xuan525
+    /// Date: 14/03/2019
     /// </summary>
     public partial class LoginWindow : Window
     {

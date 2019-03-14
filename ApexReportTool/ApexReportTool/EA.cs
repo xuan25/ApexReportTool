@@ -9,6 +9,11 @@ using Json;
 
 namespace ApexReportTool
 {
+    /// <summary>
+    /// A class for EA interface
+    /// Author: Xuan525
+    /// Date: 14/03/2019
+    /// </summary>
     class EA
     {
         public class TokenExpiredException : Exception

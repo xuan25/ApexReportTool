@@ -5,7 +5,7 @@ namespace ApexReportTool
     /// <summary>
     /// A class for Generating report details
     /// Author: Xuan525
-    /// Date: 09/03/2019
+    /// Date: 14/03/2019
     /// </summary>
     class ReportDetails
     {
