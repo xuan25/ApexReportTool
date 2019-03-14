@@ -87,9 +87,10 @@
 
         </Grid>
         <Grid Grid.Row="1">
-            <Button x:Name="RefreshBtn" Content="识别正在观战的玩家Id" HorizontalAlignment="Right" VerticalAlignment="Center" Width="135" Click="RefreshBtn_Click" Margin="0,6,90,6"/>
+            <Button x:Name="RefreshBtn" Content="Id识别" ToolTip="识别正在观战的玩家的游戏内Id" HorizontalAlignment="Right" VerticalAlignment="Center" Width="75" Click="RefreshBtn_Click" Margin="0,6,90,6"/>
             <Button x:Name="SubmitBtn" Content="提交" HorizontalAlignment="Right" VerticalAlignment="Center" Width="75" Margin="0,0,10,0" Click="SubmitBtn_Click"/>
-            <CheckBox x:Name="SaveImgCkb" Content="备份捕获图像" IsChecked="True" HorizontalAlignment="Right" Margin="0,0,230,0" VerticalAlignment="Center"/>
+            <CheckBox x:Name="SaveImgCkb" Content="备份捕获图像" IsChecked="True" HorizontalAlignment="Right" Margin="0,0,170,0" VerticalAlignment="Center"/>
+            <Button x:Name="LoginBtn" Content="登录EA" ToolTip="登录EA账号可将举报信息同步提交给EA" HorizontalAlignment="Left" Margin="10,6,0,0" VerticalAlignment="Top" Width="75" Click="LoginBtn_Click"/>
         </Grid>
 
 

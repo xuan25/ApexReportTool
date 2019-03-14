@@ -65,10 +65,17 @@
     <Compile Include="ApexEac.cs" />
     <Compile Include="ApexLayout.cs" />
     <Compile Include="Hotkey.cs" />
+    <Compile Include="LoginWindow.xaml.cs">
+      <DependentUpon>LoginWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MessageBoxEx.cs" />
     <Compile Include="PlayerIdParser.cs" />
     <Compile Include="ReportDetails.cs" />
     <Compile Include="Screenshot.cs" />
+    <Page Include="LoginWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

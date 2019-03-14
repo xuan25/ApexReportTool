@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
@@ -90,6 +91,7 @@ namespace ApexReportTool
             public string PlayerId, FirstName, Email, Details;
             public bool IsWallHack, IsAimbot, IsSpeedHacked, IsDamageHacked;
             public bool IsSaveImg;
+            public bool IsLoggedIn;
         }
 
         public void SaveStatus()
@@ -104,7 +106,8 @@ namespace ApexReportTool
                 IsAimbot = AimbotCkb.IsChecked == true,
                 IsSpeedHacked = SpeedHackedCkb.IsChecked == true,
                 IsDamageHacked = DamageHackedCkb.IsChecked == true,
-                IsSaveImg = SaveImgCkb.IsChecked == true
+                IsSaveImg = SaveImgCkb.IsChecked == true,
+                IsLoggedIn = IsLoggedIn
             };
 
             string fileDirectory = Environment.CurrentDirectory + "\\";
@@ -141,6 +144,9 @@ namespace ApexReportTool
                 DamageHackedCkb.IsChecked = status.IsDamageHacked;
                 SaveImgCkb.IsChecked = status.IsSaveImg;
 
+                if (status.IsLoggedIn)
+                    LoginBtn_Click(null, null);
+
                 return true;
             }
             catch (Exception)
@@ -158,6 +164,8 @@ namespace ApexReportTool
         {
             notifyIcon.Dispose();
             SaveStatus();
+            if (loginWindow != null)
+                loginWindow.Close();
         }
 
         Thread getPlayerIdThread;
@@ -269,5 +277,54 @@ namespace ApexReportTool
             MessageBoxEx.Show(this, "提交成功", "提交成功", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
+        private bool IsLoggedIn = false;
+        private LoginWindow loginWindow;
+        private string EaToken = null;
+
+        private void LoginBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (loginWindow == null)
+            {
+                loginWindow = new LoginWindow();
+                loginWindow.LoggedIn += LoginWindow_LoggedIn;
+                loginWindow.LoggedOut += LoginWindow_LoggedOut;
+            }
+                
+            if (IsLoggedIn)
+            {
+                loginWindow.Logout();
+                LoginBtn.IsEnabled = false;
+                LoginBtn.Content = "正在注销...";
+            }
+            else
+            {
+                loginWindow.Login();
+                LoginBtn.IsEnabled = false;
+                LoginBtn.Content = "正在登录...";
+            }
+            
+        }
+
+        private void LoginWindow_LoggedIn(string token)
+        {
+            Dispatcher.Invoke(new Action(() =>
+            {
+                LoginBtn.IsEnabled = true;
+                LoginBtn.Content = "注销登录";
+            }));
+            EaToken = Regex.Match(token, "{\"access_token\":\"(?<Token>.+)\",\"token_type\":\".+\",\"expires_in\":\".+\"}").Groups["Token"].Value;
+            IsLoggedIn = true;
+        }
+
+        private void LoginWindow_LoggedOut()
+        {
+            Dispatcher.Invoke(new Action(() =>
+            {
+                LoginBtn.IsEnabled = true;
+                LoginBtn.Content = "登录EA";
+            }));
+            IsLoggedIn = false;
+        }
+        
     }
 }
