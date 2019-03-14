@@ -111,7 +111,7 @@ namespace ApexReportTool
         /// <param name="lastName">Last name of the user</param>
         /// <param name="email">Email of the user</param>
         /// <param name="message">Details of what you want to report</param>
-        public static void Submit(string playerId, string firstName, string lastName, string email, string message)
+        public static bool Submit(string playerId, string firstName, string lastName, string email, string message)
         {
             Verification verification = GetVerification();
 
@@ -128,7 +128,7 @@ namespace ApexReportTool
 
             if (!result.Contains("\"success\":true"))
                 throw new InvalidParameterException(result);
-            return;
+            return true;
         }
     }
 }

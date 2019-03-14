@@ -64,7 +64,9 @@
     </ApplicationDefinition>
     <Compile Include="ApexEac.cs" />
     <Compile Include="ApexLayout.cs" />
+    <Compile Include="EA.cs" />
     <Compile Include="Hotkey.cs" />
+    <Compile Include="JsonParser.cs" />
     <Compile Include="LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>

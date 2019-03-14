@@ -107,7 +107,7 @@ namespace ApexReportTool
                 IsSpeedHacked = SpeedHackedCkb.IsChecked == true,
                 IsDamageHacked = DamageHackedCkb.IsChecked == true,
                 IsSaveImg = SaveImgCkb.IsChecked == true,
-                IsLoggedIn = IsLoggedIn
+                IsLoggedIn = ea != null
             };
 
             string fileDirectory = Environment.CurrentDirectory + "\\";
@@ -260,26 +260,56 @@ namespace ApexReportTool
                 SpeedHackedCkb.IsChecked == true, 
                 DamageHackedCkb.IsChecked == true, 
                 DetailsBox.Text);
+            SubmitReports(reportDetails);
+        }
+
+        private void SubmitReports(ReportDetails reportDetails)
+        {
+            if (ea != null)
+            {
+                try
+                {
+                    if (ea.ReportCheat(reportDetails.HackerName, reportDetails.ToString()))
+                    {
+                        MessageBoxEx.Show(this, "举报信息已成功提交给EA", "[EA]提交成功", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                }
+                catch (EA.TokenExpiredException)
+                {
+                    MessageBoxEx.Show(this, "EA登录已过期，请重新登录", "[EA]提交失败",  MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                catch (EA.PlayerNotFoundException)
+                {
+                    MessageBoxEx.Show(this, "未能找到被举报玩家，请检查举报信息是否正确", "[EA]提交失败", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                catch (EA.ReportFaildException ex)
+                {
+                    MessageBoxEx.Show(this, ex.Message, "[EA]提交失败", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+
             try
             {
-                ApexEac.Submit(PlayerIdBox.Text, FirstNameBox.Text, "", EmailBox.Text, reportDetails.ToString());
+                if (ApexEac.Submit(PlayerIdBox.Text, FirstNameBox.Text, "", EmailBox.Text, reportDetails.ToString()))
+                {
+                    MessageBoxEx.Show(this, "举报信息已成功提交给EAC", "[EAC]提交成功", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
             }
             catch (ApexEac.GetVerificationException)
             {
-                MessageBoxEx.Show(this, "连接失败", "提交失败", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
+                MessageBoxEx.Show(this, "连接失败", "[EAC]提交失败", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             catch (ApexEac.InvalidParameterException ex)
             {
-                MessageBoxEx.Show(this, ex.Message, "提交被驳回", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
+                MessageBoxEx.Show(this, ex.Message, "[EAC]提交被驳回", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            MessageBoxEx.Show(this, "提交成功", "提交成功", MessageBoxButton.OK, MessageBoxImage.Information);
+            
         }
 
-        private bool IsLoggedIn = false;
+
         private LoginWindow loginWindow;
-        private string EaToken = null;
+        private EA ea;
 
         private void LoginBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -290,17 +320,17 @@ namespace ApexReportTool
                 loginWindow.LoggedOut += LoginWindow_LoggedOut;
             }
                 
-            if (IsLoggedIn)
-            {
-                loginWindow.Logout();
-                LoginBtn.IsEnabled = false;
-                LoginBtn.Content = "正在注销...";
-            }
-            else
+            if (ea == null)
             {
                 loginWindow.Login();
                 LoginBtn.IsEnabled = false;
                 LoginBtn.Content = "正在登录...";
+            }
+            else
+            {
+                loginWindow.Logout();
+                LoginBtn.IsEnabled = false;
+                LoginBtn.Content = "正在注销...";
             }
             
         }
@@ -312,8 +342,8 @@ namespace ApexReportTool
                 LoginBtn.IsEnabled = true;
                 LoginBtn.Content = "注销登录";
             }));
-            EaToken = Regex.Match(token, "{\"access_token\":\"(?<Token>.+)\",\"token_type\":\".+\",\"expires_in\":\".+\"}").Groups["Token"].Value;
-            IsLoggedIn = true;
+            string eaToken = Regex.Match(token, "{\"access_token\":\"(?<Token>.+)\",\"token_type\":\".+\",\"expires_in\":\".+\"}").Groups["Token"].Value;
+            ea = new EA(eaToken);
         }
 
         private void LoginWindow_LoggedOut()
@@ -323,7 +353,7 @@ namespace ApexReportTool
                 LoginBtn.IsEnabled = true;
                 LoginBtn.Content = "登录EA";
             }));
-            IsLoggedIn = false;
+            ea = null;
         }
         
     }
