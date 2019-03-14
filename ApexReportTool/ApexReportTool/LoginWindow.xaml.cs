@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Text.RegularExpressions;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
 
@@ -11,7 +12,7 @@ namespace ApexReportTool
     /// </summary>
     public partial class LoginWindow : Window
     {
-        public delegate void LoggedInDel(string token);
+        public delegate void LoggedInDel(string json);
         public event LoggedInDel LoggedIn;
         public delegate void LoggedOutDel();
         public event LoggedOutDel LoggedOut;
@@ -46,7 +47,7 @@ namespace ApexReportTool
                 this.WindowState = WindowState.Normal;
                 this.ShowInTaskbar = true;
             }
-            else if (e.Uri.ToString().StartsWith("https://www.origin.com/gbr/en-us/oauth/login"))
+            else if (Regex.Match(e.Uri.ToString(), "https://www.origin.com/[a-z]+/[a-z-]+/oauth/login").Success)
             {
                 this.Hide();
                 webBrowser.Navigate("https://accounts.ea.com/connect/auth?client_id=ORIGIN_JS_SDK&response_type=token&redirect_uri=nucleus:rest&prompt=none&release_type=prod");
@@ -55,16 +56,15 @@ namespace ApexReportTool
             {
                 //this.Hide();
                 dynamic document = webBrowser.Document;
-                string json = document.IHTMLDocument2_body.IHTMLElement_innerText;
+                string json = document.documentElement.innerText;
                 LoggedIn?.Invoke(json);
             }
-            else if (e.Uri.ToString().StartsWith("https://www.origin.com/gbr/en-us/oauth/logout"))
+            else if (Regex.Match(e.Uri.ToString(), "https://www.origin.com/[a-z]+/[a-z-]+/oauth/logout").Success)
             {
                 this.Hide();
                 LoggedOut?.Invoke();
             }
         }
-
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -83,7 +83,7 @@ namespace ApexReportTool
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if(!IsClose)
+            if (!IsClose)
             {
                 e.Cancel = true;
                 this.Hide();

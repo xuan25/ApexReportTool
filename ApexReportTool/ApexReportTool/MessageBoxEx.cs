@@ -158,6 +158,7 @@ namespace ApexReportTool
             _hHook = IntPtr.Zero;
         }
 
+        [DllImport("kernel32.dll")] static extern int GetCurrentThreadId();
         private static void Initialize()
         {
             if (_hHook != IntPtr.Zero)
@@ -167,7 +168,7 @@ namespace ApexReportTool
 
             if (_owner != null)
             {
-                _hHook = SetWindowsHookEx(WH_CALLWNDPROCRET, _hookProc, IntPtr.Zero, AppDomain.GetCurrentThreadId());
+                _hHook = SetWindowsHookEx(WH_CALLWNDPROCRET, _hookProc, IntPtr.Zero, GetCurrentThreadId());
             }
         }
 

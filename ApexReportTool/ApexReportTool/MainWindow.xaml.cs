@@ -335,15 +335,15 @@ namespace ApexReportTool
             
         }
 
-        private void LoginWindow_LoggedIn(string token)
+        private void LoginWindow_LoggedIn(string json)
         {
             Dispatcher.Invoke(new Action(() =>
             {
                 LoginBtn.IsEnabled = true;
                 LoginBtn.Content = "注销登录";
             }));
-            string eaToken = Regex.Match(token, "{\"access_token\":\"(?<Token>.+)\",\"token_type\":\".+\",\"expires_in\":\".+\"}").Groups["Token"].Value;
-            ea = new EA(eaToken);
+            string token = Regex.Match(json, "{\"access_token\":\"(?<Token>.+)\",\"token_type\":\".+\",\"expires_in\":\".+\"}").Groups["Token"].Value;
+            ea = new EA(token);
         }
 
         private void LoginWindow_LoggedOut()
